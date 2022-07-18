@@ -44,8 +44,8 @@ bot.onText(/\/getChatIds/, (msg, match) => {
   bot.sendMessage(algorBerunChatID, JSON.stringify(chatIds));
 });
 
-cron.schedule("*/20 * * * *", () => {
-  exec("docker-compose down", (error, stdout, stderr) => {
+cron.schedule("*/2 * * * *", () => {
+  exec("docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
     if (error) {
       console.log(`error: ${error.message}`);
       return;
@@ -55,16 +55,5 @@ cron.schedule("*/20 * * * *", () => {
       return;
     }
     console.log(`stdout: ${stdout}`);
-    exec("docker-compose down", (error, stdout, stderr) => {
-      if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-      }
-      console.log(`stdout: ${stdout}`);
-    });
   });
 });
