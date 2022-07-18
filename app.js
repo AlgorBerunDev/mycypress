@@ -12,7 +12,7 @@ const chatIds = [];
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-const lastDate = "";
+let lastDate = "";
 app.post("/123456", (req, res) => {
   if (req.body.d && req.body.data !== lastDate) {
     lastDate = req.body.data;
