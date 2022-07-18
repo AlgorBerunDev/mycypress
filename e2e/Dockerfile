@@ -10,6 +10,7 @@ COPY package-lock.json .
 # https://github.com/cypress-io/cypress/issues/1243
 ENV CI=1
 RUN npm ci
+RUN ls -al
 # verify that Cypress has been installed correctly.
 # running this command separately from "cypress run" will also cache its result
 # to avoid verifying again when running the tests
