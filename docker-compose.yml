@@ -4,15 +4,7 @@ services:
     image: cypress
     build: ./e2e
     container_name: cypress
-    depends_on:
-      - web
-    # note: inside e2e container, the network allows accessing
-    # "web" host under name "web"
-    # so "curl http://web" would return whatever the webserver
-    # in the "web" container is cooking
     # see https://docs.docker.com/compose/networking/
-    environment:
-      - CYPRESS_baseUrl=http://web
     command: npx cypress run
     # mount the host directory e2e/cypress and the file e2e/cypress.config.js as
     # volumes within the container
