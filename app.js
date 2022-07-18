@@ -65,7 +65,7 @@ bot.onText(/\/getInfo/, (msg, match) => {
   });
 });
 
-cron.schedule("*/1 * * * *", () => {
+cron.schedule("*/30 * * * *", () => {
   exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
     if (error) {
       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
