@@ -1,10 +1,27 @@
 version: "3"
 services:
+  web:
+    image: apache
+    build: ./webapp
+    container_name: apache
+    restart: always
+    # we can see the server running at "localhost:8080"
+    ports:
+      - "8080:80"
+
   e2e:
     image: cypress
     build: ./e2e
     container_name: cypress
+    depends_on:
+      - web
+    # note: inside e2e container, the network allows accessing
+    # "web" host under name "web"
+    # so "curl http://web" would return whatever the webserver
+    # in the "web" container is cooking
     # see https://docs.docker.com/compose/networking/
+    environment:
+      - CYPRESS_baseUrl=http://web
     command: npx cypress run
     # mount the host directory e2e/cypress and the file e2e/cypress.config.js as
     # volumes within the container
@@ -15,5 +32,5 @@ services:
     #     machine immediately takes effect within the e2e container (no docker
     #     rebuild required).
     volumes:
-      - ./cypress:/app/cypress
-      - ./cypress.config.js:/app/cypress.config.js
+      - ./e2e/cypress:/app/cypress
+      - ./e2e/cypress.config.js:/app/cypress.config.js
