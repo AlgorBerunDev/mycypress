@@ -44,7 +44,6 @@ bot.onText(/\/getChatIds/, (msg, match) => {
   bot.sendMessage(algorBerunChatID, JSON.stringify(chatIds));
 });
 bot.onText(/\/getInfo/, (msg, match) => {
-  const chatId = msg.chat.id;
   exec("docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
     if (error) {
       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
