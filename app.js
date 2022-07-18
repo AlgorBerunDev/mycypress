@@ -12,16 +12,14 @@ const chatIds = [];
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-let lastDate = "";
+let lastDate = [];
 app.post("/123456", (req, res) => {
-  if (req.body.d && JSON.stringify(req.body.data) !== lastDate) {
-    lastDate = JSON.stringify(req.body.data);
-    bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
-    chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
-  } else if (!req.body.d) {
+  if (!lastDate.includes(JSON.stringify(req.body.data))) {
+    lastDate.push(JSON.stringify(req.body.data));
     bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
     chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
   }
+
   res.send("--*0*--");
 });
 
