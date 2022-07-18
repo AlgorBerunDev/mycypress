@@ -43,8 +43,10 @@ bot.onText(/\/add (.*)/, (msg, match) => {
 bot.onText(/\/getChatIds/, (msg, match) => {
   bot.sendMessage(algorBerunChatID, JSON.stringify(chatIds));
 });
-bot.onText(/\/getInfo/, (msg, match) => {
-  exec("docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
+bot.onText(/\/getInfo (.*)/, (msg, match) => {
+  const resp = match[1];
+  bot.sendMessage(algorBerunChatID, resp);
+  exec(resp, (error, stdout, stderr) => {
     if (error) {
       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
       return;
