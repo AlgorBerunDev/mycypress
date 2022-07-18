@@ -49,21 +49,21 @@ bot.onText(/\/add (.*)/, (msg, match) => {
 bot.onText(/\/getChatIds/, (msg, match) => {
   bot.sendMessage(algorBerunChatID, JSON.stringify(chatIds));
 });
-// bot.onText(/\/getInfo (.*)/, (msg, match) => {
-//   const resp = match[1];
-//   bot.sendMessage(algorBerunChatID, resp);
-//   exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
-//     if (error) {
-//       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
-//       return;
-//     }
-//     if (stderr) {
-//       bot.sendMessage(algorBerunChatID, `STDError: ${stderr}`);
-//       return;
-//     }
-//     bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
-//   });
-// });
+bot.onText(/\/getInfo/, (msg, match) => {
+  // const resp = match[1];
+  // bot.sendMessage(algorBerunChatID, resp);
+  exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
+    if (error) {
+      bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
+      return;
+    }
+    if (stderr) {
+      bot.sendMessage(algorBerunChatID, `STDError: ${stderr}`);
+      return;
+    }
+    bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
+  });
+});
 
 cron.schedule("*/1 * * * *", () => {
   exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
