@@ -12,12 +12,17 @@ const chatIds = [];
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
+const lastDate = "";
 app.post("/123456", (req, res) => {
-  console.log("request", req.body);
-  bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
-  chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
-
-  res.send("Hello World!");
+  if (req.body.d && req.body.data !== lastDate) {
+    lastDate = req.body.data;
+    bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
+    chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
+  } else if (!req.body.d) {
+    bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
+    chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
+  }
+  res.send("--*0*--");
 });
 
 app.listen(port, () => {
@@ -44,10 +49,24 @@ bot.onText(/\/add (.*)/, (msg, match) => {
 bot.onText(/\/getChatIds/, (msg, match) => {
   bot.sendMessage(algorBerunChatID, JSON.stringify(chatIds));
 });
-bot.onText(/\/getInfo (.*)/, (msg, match) => {
-  const resp = match[1];
-  bot.sendMessage(algorBerunChatID, resp);
-  exec(resp, (error, stdout, stderr) => {
+// bot.onText(/\/getInfo (.*)/, (msg, match) => {
+//   const resp = match[1];
+//   bot.sendMessage(algorBerunChatID, resp);
+//   exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
+//     if (error) {
+//       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
+//       return;
+//     }
+//     if (stderr) {
+//       bot.sendMessage(algorBerunChatID, `STDError: ${stderr}`);
+//       return;
+//     }
+//     bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
+//   });
+// });
+
+cron.schedule("*/20 * * * *", () => {
+  exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
     if (error) {
       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
       return;
@@ -57,19 +76,5 @@ bot.onText(/\/getInfo (.*)/, (msg, match) => {
       return;
     }
     bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
-  });
-});
-
-cron.schedule("*/2 * * * *", () => {
-  exec("docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
-    if (error) {
-      console.log(`error: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.log(`stderr: ${stderr}`);
-      return;
-    }
-    console.log(`stdout: ${stdout}`);
   });
 });

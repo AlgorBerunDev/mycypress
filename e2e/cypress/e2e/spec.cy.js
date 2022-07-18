@@ -35,11 +35,11 @@ describe("empty spec", () => {
     cy.wait("@lastAvailableDate").wait("@lastAvailableDate").wait("@availableMonthDates");
     cy.get("@lastAvailableDate.all").then(async xhrs => {
       // xhrs is an array of network call objects
-      await axios.post(`https://fibro.uz/123456`, { data: xhrs[1].response.body });
+      await axios.post(`https://fibro.uz/123456`, { data: xhrs[1].response.body, d: true });
     });
     cy.get("@availableMonthDates.all").then(async xhrs => {
       // xhrs is an array of network call objects
-      if (xhrs[0].response.body === "Šobrīd visi pieejamie laiki ir aizņemti") {
+      if (xhrs[0].response.body !== "Šobrīd visi pieejamie laiki ir aizņemti") {
         await axios.post(`https://fibro.uz/123456`, { data: xhrs[0].response.body });
       }
     });
