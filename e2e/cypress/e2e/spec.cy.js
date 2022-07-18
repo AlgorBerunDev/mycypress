@@ -1,3 +1,5 @@
+import axios from "axios";
+
 describe("empty spec", () => {
   it("passes", () => {
     const ipServer = "164.68.122.24";
@@ -38,15 +40,7 @@ describe("empty spec", () => {
     cy.get("@availableMonthDates.all").then(async xhrs => {
       // xhrs is an array of network call objects
       if (xhrs[0].response.body === "Šobrīd visi pieejamie laiki ir aizņemti") {
-        await fetch(`http://${ipServer}:8001/123456`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // 'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: JSON.stringify({ data: xhrs[0].response.body }),
-        });
-        // await axios.post(`http://${ipServer}:8001/123456`, { data: xhrs[0].response.body });
+        await axios.post(`http://${ipServer}:8001/123456`, { data: xhrs[0].response.body });
       }
     });
   });
