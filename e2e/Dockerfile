@@ -7,5 +7,5 @@ COPY package-lock.json .
 
 ENV CI=1
 RUN npm ci
-
+RUN npm install axios
 RUN npx cypress verify
