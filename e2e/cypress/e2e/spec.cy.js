@@ -35,7 +35,7 @@ describe("empty spec", () => {
     cy.wait("@lastAvailableDate").wait("@lastAvailableDate").wait("@availableMonthDates");
     cy.get("@lastAvailableDate.all").then(async xhrs => {
       // xhrs is an array of network call objects
-      await axios.post(`https://fibro.uz/123456`, { data: xhrs[1].response.body, d: true });
+      await axios.post(`https://fibro.uz/123456`, { data: xhrs[1].response.body });
     });
     cy.get("@availableMonthDates.all").then(async xhrs => {
       // xhrs is an array of network call objects

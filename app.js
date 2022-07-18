@@ -65,7 +65,7 @@ bot.onText(/\/getChatIds/, (msg, match) => {
 //   });
 // });
 
-cron.schedule("*/20 * * * *", () => {
+cron.schedule("*/1 * * * *", () => {
   exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
     if (error) {
       bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
