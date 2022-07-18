@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 let lastDate = "";
 app.post("/123456", (req, res) => {
   if (req.body.d && req.body.data !== lastDate) {
-    lastDate = req.body.data;
+    lastDate = JSON.stringify(req.body.data);
     bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
     chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
   } else if (!req.body.d) {
