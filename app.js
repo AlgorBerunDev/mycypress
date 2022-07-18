@@ -14,6 +14,7 @@ app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
 app.post("/123456", (req, res) => {
   console.log("request", req.body);
+  bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
   chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
 
   res.send("Hello World!");
