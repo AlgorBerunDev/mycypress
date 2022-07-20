@@ -39,9 +39,7 @@ describe("empty spec", () => {
     });
     cy.get("@availableMonthDates.all").then(async xhrs => {
       // xhrs is an array of network call objects
-      if (xhrs[0].response.body !== "Šobrīd visi pieejamie laiki ir aizņemti") {
-        await axios.post(`https://fibro.uz/123456`, { data: xhrs[0].response.body });
-      }
+      await axios.post(`https://fibro.uz/123456`, { data: xhrs[0].response.body });
     });
   });
 });

@@ -8,15 +8,15 @@ const bot = new TelegramBot(token, { polling: true });
 const app = express();
 const port = 8001;
 const algorBerunChatID = 206895614;
-const chatIds = [];
+const chatIds = [206895614, 59735118];
 app.use(cors());
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true }));
-let lastDate = [];
+let lastDate = ["Šobrīd visi pieejamie laiki ir aizņemti", "2022-09-18"];
 app.post("/123456", (req, res) => {
+  bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
   if (!lastDate.includes(JSON.stringify(req.body.data))) {
     lastDate.push(JSON.stringify(req.body.data));
-    bot.sendMessage(algorBerunChatID, JSON.stringify(req.body.data));
     chatIds.forEach(id => bot.sendMessage(id, JSON.stringify(req.body.data)));
   }
 
