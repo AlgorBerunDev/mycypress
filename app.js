@@ -64,15 +64,27 @@ bot.onText(/\/getInfo/, (msg, match) => {
 });
 
 cron.schedule("*/30 * * * *", () => {
-  exec("sudo docker-compose up --abort-on-container-exit --exit-code-from e2e", (error, stdout, stderr) => {
+  exec("sudo docker-compose down", (error, stdout, stderr) => {
+    exec("sudo docker-compose up", (error, stdout, stderr) => {
+      if (error) {
+        bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        bot.sendMessage(algorBerunChatID, `STDError: ${stderr}`);
+        return;
+      }
+      bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
+    });
+
     if (error) {
-      bot.sendMessage(algorBerunChatID, `Error: ${error.message}`);
+      bot.sendMessage(algorBerunChatID, `Error1: ${error.message}`);
       return;
     }
     if (stderr) {
-      bot.sendMessage(algorBerunChatID, `STDError: ${stderr}`);
+      bot.sendMessage(algorBerunChatID, `STDError1: ${stderr}`);
       return;
     }
-    bot.sendMessage(algorBerunChatID, `stdout: ${stdout}`);
+    bot.sendMessage(algorBerunChatID, `stdout1: ${stdout}`);
   });
 });
